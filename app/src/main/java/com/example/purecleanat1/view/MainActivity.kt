@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
     fun observeViewModel(){
         viewModel.countries.observe(this, Observer {  countries->
             countries?.let{countriesAdapter.updateCunties(it)
+              binding.countiresList.visibility=View.VISIBLE
                 Log.e("viiiidnfk","1")
                 Log.e("viiiidnfk","sdfasdfasfd"+countries.toString())
             }

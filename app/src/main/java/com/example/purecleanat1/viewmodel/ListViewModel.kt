@@ -3,6 +3,12 @@ package com.example.purecleanat1.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.purecleanat1.Country
+import com.example.purecleanat1.model.CountiesService
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
+import io.reactivex.observers.DisposableSingleObserver
+import io.reactivex.schedulers.Schedulers
 
 /**
  * 3 var
@@ -10,7 +16,8 @@ import com.example.purecleanat1.Country
  *
  */
 class ListViewModel:ViewModel() {
-
+private val countriesService=CountiesService()
+    private val disposable=CompositeDisposable()
     val countries= MutableLiveData<List<Country>>()
     //true for error
     val countryLoadError = MutableLiveData<Boolean>()
@@ -23,19 +30,34 @@ class ListViewModel:ViewModel() {
 
     }
     private  fun fetchCountries(){
-        val mockData= listOf(Country("country a"),
-            Country("country a"),
-            Country("country b"),
-            Country("country c"),
-            Country("country d"),
-            Country("country f"),
-            Country("country j")
-        )
-        countryLoadError.value=false
-        loading.value=false
-        countries.value=mockData
+      loading.value=true
+        disposable.add(
+            countriesService.getCountires()
+                    //create new thread and dont effec UI Thread
+                .subscribeOn(Schedulers.newThread())
+                //we need to interact with UI so ...
+                .observeOn(AndroidSchedulers.mainThread())
+                    //what we gonna do when we have datas
+                .subscribeWith(object : DisposableSingleObserver<List<Country>>(){
+                    override fun onSuccess(value: List<Country>?) {
+                        countries.value=value
+                        countryLoadError.value=false
+                        loading.value=false
+                    }
 
+                    override fun onError(e: Throwable?) {
+                       countryLoadError.value=true
+                        loading.value=false
+                    }
+
+                })
+        )
 
     }
 
+    override fun onCleared() {
+        //what to do we fineshed:
+        super.onCleared()
+        disposable.clear()
+    }
 }
