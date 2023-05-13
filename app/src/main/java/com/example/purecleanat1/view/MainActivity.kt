@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import androidx.core.view.isEmpty
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.purecleanat1.R
@@ -21,12 +22,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //set binding
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
         // take care to update viewmodel and destory it when we dont need it
-        viewModel=ViewModelProviders.of(this).get(ListViewModel::class.java)
+      //  viewModel=ViewModelProviders.of(this).get(ListViewModel::class.java)
+        viewModel= ViewModelProvider(this).get(ListViewModel::class.java)
         viewModel.refresh()
         binding.countiresList.apply {
             layoutManager=LinearLayoutManager(context)
