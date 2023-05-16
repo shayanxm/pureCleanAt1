@@ -31,6 +31,7 @@ private val countriesService=CountiesService()
     }
     private  fun fetchCountries(){
       loading.value=true
+
         disposable.add(
             countriesService.getCountires()
                     //create new thread and dont effec UI Thread

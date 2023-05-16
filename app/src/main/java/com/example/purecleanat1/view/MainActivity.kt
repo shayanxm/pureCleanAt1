@@ -16,8 +16,8 @@ import com.example.purecleanat1.viewmodel.ListViewModel
 
 class MainActivity : AppCompatActivity() {
     //i promise i give this before i use it
-    lateinit var viewModel:ListViewModel
-    private val countriesAdapter=CountryListAdapter(arrayListOf())
+    lateinit var viewModel: ListViewModel
+    private val countriesAdapter = CountryListAdapter(arrayListOf())
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,44 +28,49 @@ class MainActivity : AppCompatActivity() {
         setContentView(view)
 
         // take care to update viewmodel and destory it when we dont need it
-      //  viewModel=ViewModelProviders.of(this).get(ListViewModel::class.java)
-        viewModel= ViewModelProvider(this).get(ListViewModel::class.java)
+        //  viewModel=ViewModelProviders.of(this).get(ListViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(ListViewModel::class.java)
         viewModel.refresh()
         binding.countiresList.apply {
-            layoutManager=LinearLayoutManager(context)
-            adapter=countriesAdapter
+            layoutManager = LinearLayoutManager(context)
+            adapter = countriesAdapter
+        }
+        binding.SwipeRefreshLayout.setOnRefreshListener {
+            binding.SwipeRefreshLayout.isRefreshing=false
+            viewModel.refresh()
         }
 
         observeViewModel()
-        Log.e("viiiidnfk","xxxx ${binding.countiresList.adapter?.itemCount}")
-
+        Log.e("viiiidnfk", "xxxx ${binding.countiresList.adapter?.itemCount}")
 
 
     }
-    fun observeViewModel(){
-        viewModel.countries.observe(this, Observer {  countries->
-            countries?.let{countriesAdapter.updateCunties(it)
-              binding.countiresList.visibility=View.VISIBLE
-                Log.e("viiiidnfk","1")
-                Log.e("viiiidnfk","sdfasdfasfd"+countries.toString())
+
+    fun observeViewModel() {
+        viewModel.countries.observe(this, Observer { countries ->
+            countries?.let {
+                countriesAdapter.updateCunties(it)
+                binding.countiresList.visibility = View.VISIBLE
+                Log.e("viiiidnfk", "1")
+                Log.e("viiiidnfk", "sdfasdfasfd" + countries.toString())
             }
         })
-    viewModel.countryLoadError.observe(this, Observer { isError->
-        isError?.let {
-            Log.e("viiiidnfk","2")
-            Log.e("viiiidnfk","2"+it)
-            binding.listError.visibility=if (it) View.VISIBLE else View.GONE }
-    })
-        viewModel.loading.observe(this, Observer { isLoading->
+        viewModel.countryLoadError.observe(this, Observer { isError ->
+            isError?.let {
+                Log.e("viiiidnfk", "2")
+                Log.e("viiiidnfk", "2" + it)
+                binding.listError.visibility = if (it) View.VISIBLE else View.GONE
+            }
+        })
+        viewModel.loading.observe(this, Observer { isLoading ->
             isLoading?.let {
-                Log.e("viiiidnfk","3"+it)
-binding.loadingView.visibility=View.GONE
-                binding.loadingView.visibility=if (it) View.VISIBLE else View.GONE
-                if (it){
-                    binding.listError.visibility=View.GONE
-                    binding.listError.visibility=View.GONE
+                Log.e("viiiidnfk", "3" + it)
+                binding.loadingView.visibility = View.GONE
+                binding.loadingView.visibility = if (it) View.VISIBLE else View.GONE
+                if (it) {
+                    binding.listError.visibility = View.GONE
+                    binding.listError.visibility = View.GONE
                 }
-
 
 
             }
