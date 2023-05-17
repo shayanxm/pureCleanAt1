@@ -25,7 +25,6 @@ class CountryListAdapter(var countires: ArrayList<Country>) :
         notifyDataSetChanged()
     }
 
-
     class Viewholder(view: View) : RecyclerView.ViewHolder(view) {
         private val imageView=view.findViewById<ImageView>(R.id.imageView)
         private val countryCapital=view.findViewById<TextView>(R.id.capital)
@@ -37,9 +36,6 @@ class CountryListAdapter(var countires: ArrayList<Country>) :
             countryCapital.text=country.capital
 
             imageView.loadImage(country.flag,progressDrawable)
-
-
-
 
         }
 

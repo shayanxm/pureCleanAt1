@@ -1,6 +1,7 @@
 package com.example.purecleanat1.di
 
 import com.example.purecleanat1.model.CountiesApi
+import com.example.purecleanat1.model.CountiesService
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -18,5 +19,10 @@ class ApiModule {
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
             .create(CountiesApi::class.java)
+    }
+    @Provides
+    fun getCountriesService(): CountiesService {
+        return CountiesService()
+
     }
 }

@@ -14,7 +14,6 @@ return CircularProgressDrawable(context).apply {
     start()
 }
 
-
 }
 fun ImageView.loadImage(uri: String?, progressDrawable: CircularProgressDrawable) {
     val options= RequestOptions()

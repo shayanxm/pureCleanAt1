@@ -12,7 +12,6 @@ class CountiesService {
     private val BASE_URL ="https://raw.githubusercontent.com/"
   @Inject
     lateinit var  api:CountiesApi
-
     init {
       DaggerApiComponent.create().inject(this)
     }
